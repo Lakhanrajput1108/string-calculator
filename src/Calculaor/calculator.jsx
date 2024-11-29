@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 
-// Simple string calculator component
 const StringCalculator = () => {
   const [input, setInput] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-  
+  const [showAlert, setShowAlert] = useState(false);
+
   const add = (numbers) => {
     if (numbers === "") return 0;
 
-    // added delimiter logic below 
+    // added delimiter logic below
     let numArray;
     if (numbers.startsWith("//")) {
       const delimiterLineEndIndex = numbers.indexOf("\n");
@@ -31,14 +31,24 @@ const StringCalculator = () => {
   };
 
   const handleChange = (event) => {
-    setInput(event.target.value);
+    const value = event.target.value;
+    setInput(value);
+
+    // check to accept only numeric values
+    const invalidCharRegex = /[^0-9,\n]/;
+
+    if (invalidCharRegex.test(value)) {
+      setShowAlert(true);
+      // Automatically hide the alert after 3 seconds
+      setTimeout(() => setShowAlert(false), 3000);
+    }
   };
 
   const handleSubmit = () => {
     try {
       const sum = add(input);
       setResult(sum);
-      setError(null); // Clear error if no issue
+      setError(null); // Clear any previous errors
     } catch (err) {
       setError(err.message);
     }
@@ -46,20 +56,38 @@ const StringCalculator = () => {
 
   return (
     <div>
-      <h1>String Calculator</h1>
-      <textarea 
-        value={input} 
-        onChange={handleChange} 
-        rows="4" 
-        cols="50" 
-        placeholder="Enter numbers separated by commas"
+      <h1>String Calculator </h1>
+      < textarea
+        value={input}
+        onChange={handleChange}
+        rows="4"
+        cols="50"
+        placeholder="Enter numbers separated by commas or newlines"
       />
       <br />
-      <button onClick={handleSubmit}>Calculate</button>
+      < button onClick={handleSubmit} > Calculate </button>
 
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
+      {error && <p style={{ color: 'red' }}> Error: {error} </p>}
 
-      {result !== null && <h2>Result: {result}</h2>}
+      {result !== null && <h2>Result: {result} </h2>}
+
+      {
+        showAlert && (
+          <div style={
+            {
+              color: 'white',
+              backgroundColor: 'red',
+              padding: '10px',
+              position: 'absolute',
+              top: '20px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              borderRadius: '5px',
+            }
+          }>
+            Invalid input! Only numbers, commas, and newlines are allowed.
+          </div>
+        )}
     </div>
   );
 };
