@@ -39,8 +39,8 @@ const StringCalculator = () => {
 
     if (invalidCharRegex.test(value)) {
       setShowAlert(true);
-      // Automatically hide the alert after 3 seconds
-      setTimeout(() => setShowAlert(false), 3000);
+      // Automatically hide the alert after 5 seconds
+      setTimeout(() => setShowAlert(false), 5000);
     }
   };
 
