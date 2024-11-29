@@ -5,24 +5,31 @@ const StringCalculator = () => {
   const [input, setInput] = useState('');
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
-
+  
   const add = (numbers) => {
     if (numbers === "") return 0;
 
+    // added delimiter logic below 
+    let numArray;
     if (numbers.startsWith("//")) {
-      // added delimiter logic below 
       const delimiterLineEndIndex = numbers.indexOf("\n");
       const delimiter = numbers.slice(2, delimiterLineEndIndex);
       const numString = numbers.slice(delimiterLineEndIndex + 1);
-      const numArray = numString.split(delimiter).map(Number);
-      return numArray.reduce((acc, num) => acc + num, 0);
+      numArray = numString.split(delimiter).map(Number);
+    } else {
+      // below code for new line separation 
+      numArray = numbers.split(/[\n,]/).map(Number);
     }
 
-  // below code for new line separation
-    const numArray = numbers.split(/[\n,]/).map(Number);
+    // Check for negative numbers
+    const negativeNumbers = numArray.filter(num => num < 0);
+    if (negativeNumbers.length > 0) {
+      throw new Error("Negative numbers not allowed: " + negativeNumbers.join(", "));
+    }
+
     return numArray.reduce((acc, num) => acc + num, 0);
   };
-  
+
   const handleChange = (event) => {
     setInput(event.target.value);
   };
