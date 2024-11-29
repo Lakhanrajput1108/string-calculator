@@ -60,12 +60,12 @@ const StringCalculator = () => {
       < textarea
         value={input}
         onChange={handleChange}
-        rows="4"
+        rows="10"
         cols="50"
         placeholder="Enter numbers separated by commas or newlines"
       />
       <br />
-      < button onClick={handleSubmit} > Calculate </button>
+      < button onClick={handleSubmit} style={{ backgroundColor: '#04AA6D' }}> Calculate </button>
 
       {error && <p style={{ color: 'red' }}> Error: {error} </p>}
 
