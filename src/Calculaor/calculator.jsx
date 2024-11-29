@@ -8,10 +8,21 @@ const StringCalculator = () => {
 
   const add = (numbers) => {
     if (numbers === "") return 0;
-    const numArray = numbers.split(",").map(Number);
+
+    if (numbers.startsWith("//")) {
+      // added delimiter logic below 
+      const delimiterLineEndIndex = numbers.indexOf("\n");
+      const delimiter = numbers.slice(2, delimiterLineEndIndex);
+      const numString = numbers.slice(delimiterLineEndIndex + 1);
+      const numArray = numString.split(delimiter).map(Number);
+      return numArray.reduce((acc, num) => acc + num, 0);
+    }
+
+  // below code for new line separation
+    const numArray = numbers.split(/[\n,]/).map(Number);
     return numArray.reduce((acc, num) => acc + num, 0);
   };
-
+  
   const handleChange = (event) => {
     setInput(event.target.value);
   };
